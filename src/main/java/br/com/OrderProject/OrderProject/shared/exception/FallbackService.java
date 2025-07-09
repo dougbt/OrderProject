@@ -11,13 +11,20 @@ import java.util.List;
 @Service
 public class FallbackService {
     @Autowired
-    private OrderRepository orderRepository;
-    @Autowired
     private RedisTemplate<String, Order> redisTemplate;
 
+    @Autowired
+    private OrderRepository orderRepository;
+
     public void reprocessFailedOrders() {
-        List<Order> orders = redisTemplate.opsForList().range("orders-fallback", 0, -1);
-        orders.forEach(orderRepository::save);
-        redisTemplate.delete("orders-fallback");
+        List<Order> failedOrders = redisTemplate.opsForList().range("failed-orders", 0, -1);
+        failedOrders.forEach(order -> {
+            try {
+                orderRepository.save(order);
+            } catch (Exception e) {
+                // TODO TRATAR EXCEÇÃO(REGISTRAR LOG OU NOTIFICAR ADMINISTRADOR)
+            }
+        });
+        redisTemplate.delete("failed-orders");
     }
 }

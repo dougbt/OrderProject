@@ -10,8 +10,11 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private KafkaProducerService kafkaProducerService;
+
     public Order processOrder(Order order) {
-        // Lógica de processamento do pedido (exemplo: salvar no banco)
+        kafkaProducerService.sendOrder(order);
         return orderRepository.save(order);
     }
-} 
+}

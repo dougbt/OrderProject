@@ -9,17 +9,22 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class KafkaConsumerService {
+
     @Autowired
     private OrderRepository orderRepository;
+
     @Autowired
     private RedisTemplate<String, Order> redisTemplate;
 
-    @KafkaListener(topics = "${kafka.topic.orders}", groupId = "order-group")
-    public void consumeOrder(Order order) {
+    @KafkaListener(topics = "orders-topic", groupId = "order-group")
+    public void processOrder(Order order) {
         try {
             orderRepository.save(order);
+            System.out.println("Pedido salvo no banco: " + order.getId());
         } catch (Exception e) {
-            redisTemplate.opsForList().rightPush("orders-fallback", order);
+            // Fallback: armazena no Redis se o banco falhar
+            redisTemplate.opsForList().rightPush("failed-orders", order);
+            System.out.println("Pedido armazenado no Redis (fallback): " + order.getId());
         }
     }
 }
