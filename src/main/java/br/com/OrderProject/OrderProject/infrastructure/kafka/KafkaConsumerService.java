@@ -14,9 +14,13 @@ public class KafkaConsumerService {
     private OrderRepository orderRepository;
 
     @Autowired
-    private RedisTemplate<String, Order> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
-    @KafkaListener(topics = "orders-topic", groupId = "order-group")
+    @KafkaListener(
+            topics = "${kafka.topic.orders}",
+            groupId = "order-group",
+            containerFactory = "kafkaListenerContainerFactory"
+    )
     public void processOrder(Order order) {
         try {
             orderRepository.save(order);

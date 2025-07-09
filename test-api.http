@@ -1,0 +1,31 @@
+### Test Menu Endpoint
+GET http://localhost:8080/menu
+Content-Type: application/json
+
+###
+
+### Test Create Order
+POST http://localhost:8080/orders
+Content-Type: application/json
+
+{
+  "customerId": "123",
+  "status": "PENDING",
+  "items": [
+    {
+      "name": "Hamburger",
+      "price": 25.50,
+      "category": "MEAL"
+    },
+    {
+      "name": "Coca-Cola",
+      "price": 8.50,
+      "category": "DRINK"
+    }
+  ]
+}
+
+###
+
+### Test Health Check
+GET http://localhost:8080/actuator/health 

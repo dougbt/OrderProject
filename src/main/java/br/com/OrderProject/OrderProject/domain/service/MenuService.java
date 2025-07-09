@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class MenuService {
     @Autowired
-    private OrderItemRepository itemRepository;
+    private OrderItemRepository orderItemRepository;
 
     @Autowired
     private RedisTemplate<String, Menu> redisTemplate;
@@ -21,7 +21,7 @@ public class MenuService {
     public Menu getMenu() {
         Menu menu = redisTemplate.opsForValue().get(CACHE_KEY);
         if (menu == null) {
-            menu = new Menu(itemRepository.findAll());
+            menu = new Menu(orderItemRepository.findAll());
             redisTemplate.opsForValue().set(CACHE_KEY, menu, 1, TimeUnit.HOURS);
         }
         return menu;
