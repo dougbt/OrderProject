@@ -1,4 +1,4 @@
-package br.com.OrderProject.OrderProject.api.controller;
+package br.com.OrderProject.OrderProject.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

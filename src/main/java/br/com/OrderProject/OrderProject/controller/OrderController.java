@@ -1,4 +1,4 @@
-package br.com.OrderProject.OrderProject.api.controller;
+package br.com.OrderProject.OrderProject.controller;
 
 import br.com.OrderProject.OrderProject.domain.model.Order;
 import br.com.OrderProject.OrderProject.domain.service.OrderService;
